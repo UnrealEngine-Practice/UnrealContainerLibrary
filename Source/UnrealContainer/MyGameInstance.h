@@ -10,8 +10,9 @@
  * 
  */
 UCLASS()
-class UNREALCONTAINER_API UMyGameInstance : public UGameInstance
+class UNREALCONTAINER_API UMyGameInstance final : public UGameInstance
 {
 	GENERATED_BODY()
-	
+public:
+	virtual void Init() override;
 };
