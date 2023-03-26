@@ -4,6 +4,22 @@
 #include "MyGameInstance.h"
 #include "Algo/Accumulate.h"
 
+FString MakeRandomName()
+{
+	const TCHAR FirstName[] = TEXT("김이박최");
+	const TCHAR MiddleName[] = TEXT("상해지성");
+	const TCHAR LastName[] = TEXT("수은원연");
+
+	TArray<TCHAR> RandName;
+	RandName.SetNum(3);
+
+	RandName[0] = FirstName[FMath::RandRange(0, 3)];
+	RandName[1] = MiddleName[FMath::RandRange(0, 3)];
+	RandName[2] = LastName[FMath::RandRange(0, 3)];
+
+	return (RandName.GetData());
+}
+
 void UMyGameInstance::Init()
 {
 	Super::Init();
@@ -50,4 +66,29 @@ void UMyGameInstance::Init()
 	Int32Set.Add(6);
 	Int32Set.Add(8);
 	Int32Set.Add(10);
+
+	const int32 StudentNum = 300;
+	for (int32 i = 0 ; i < StudentNum; i++)
+	{
+		StudentsData.Emplace(MakeRandomName(), i);
+	}
+
+	TArray<FString> AllStudentNames;
+	Algo::Transform(StudentsData, AllStudentNames,
+		[](const FStudentData& Val)
+		{
+			return Val.Name;
+		}
+	);
+	UE_LOG(LogTemp, Log, TEXT("모든 학생 이름의 수 : %d"), AllStudentNames.Num());
+
+	TSet<FString> AllUniqueStudentNames;
+	Algo::Transform(StudentsData, AllUniqueStudentNames,
+		[](const FStudentData& Val)
+		{
+			return Val.Name;
+		}
+	);
+	UE_LOG(LogTemp, Log, TEXT("고유한 학생 이름의 수 : %d"), AllUniqueStudentNames.Num());
+
 }
