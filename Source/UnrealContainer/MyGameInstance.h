@@ -29,4 +29,9 @@ public:
 	virtual void Init() override;
 private:
 	TArray<FStudentData> StudentsData;
+
+	UPROPERTY()
+	TArray<TObjectPtr<class UStudent>> Students;
+
+	TMap<int32, FString> StudentsMap;
 };

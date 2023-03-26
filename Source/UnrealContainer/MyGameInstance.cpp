@@ -91,4 +91,36 @@ void UMyGameInstance::Init()
 	);
 	UE_LOG(LogTemp, Log, TEXT("고유한 학생 이름의 수 : %d"), AllUniqueStudentNames.Num());
 
+	Algo::Transform(StudentsData, StudentsMap,
+		[](const FStudentData& Val)
+		{
+			return TPair<int32, FString>(Val.Order, Val.Name);
+		}
+	);
+	UE_LOG(LogTemp, Log, TEXT("순번에 따른 학생 맵의 요소 수 : %d"), StudentsMap.Num());
+
+	TMap<FString, int32> StudentsMapByName;
+	TMultiMap<FString, int32> StudentsMultiMapByName;
+
+	Algo::Transform(StudentsData, StudentsMapByName,
+		[](const FStudentData& Val)
+		{
+			return TPair<FString, int32>(Val.Name, Val.Order);
+		}
+	);
+	UE_LOG(LogTemp, Log, TEXT("이름에 따른 학생 맵의 요소 수 : %d"), StudentsMapByName.Num());
+
+	Algo::Transform(StudentsData, StudentsMultiMapByName,
+		[](const FStudentData& Val)
+		{
+			return TPair<FString, int32>(Val.Name, Val.Order);
+		}
+	);
+	UE_LOG(LogTemp, Log, TEXT("이름에 따른 학생 멀티맵의 요소 수 : %d"), StudentsMultiMapByName.Num());
+
+	const FString NameToFind(TEXT("이해은"));
+
+	TArray<int32> AllOrders;
+	StudentsMultiMapByName.MultiFind(NameToFind, AllOrders);
+	UE_LOG(LogTemp, Log, TEXT("이름이 이혜은인 학생의 수 : %d"), AllOrders.Num());
 }
